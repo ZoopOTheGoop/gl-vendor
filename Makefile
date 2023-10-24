@@ -1,16 +1,23 @@
 CC=gcc
 LIBS=-lGL -lGLX -lX11
-TARGET=gl_vendor
+TARGET?=gl_vendor
+INSTALL_PREFIX?=/usr/local/bin
 
 all: gl_vendor
 
-gl_vendor: gl_vendor.c
+target: gl_vendor.c
 	$(CC) gl_vendor.c $(LIBS) -o $(TARGET)
 
-run: gl_vendor
+run: target
 	./$(TARGET)
 
-.PHONY: clean
+install: target
+	cp $(TARGET) $(INSTALL_PREFIX)/
+
+.PHONY: clean uninstall
+
+uninstall:
+	rm -f $(INSTALL_PREFIX)/$(TARGET)
 
 clean:
-	rm $(TARGET)
+	rm -f $(TARGET)
